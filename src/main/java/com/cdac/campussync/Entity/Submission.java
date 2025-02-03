@@ -20,6 +20,8 @@ public class Submission {
     private String fileName;
     private String fileType;
 
+    private Integer grade;
+
     @Lob
     private byte[] fileData; // Stores the submitted file
 
