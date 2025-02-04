@@ -29,7 +29,7 @@ public class UserController {
 
     // Register a user in their respective table depending on their role
     @PostMapping("/register")
-    public ResponseEntity<String> register(@ModelAttribute User user) {
+    public ResponseEntity<String> register(@RequestBody User user) {
 
         boolean success = false;
 

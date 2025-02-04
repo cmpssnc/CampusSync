@@ -40,7 +40,7 @@ public class CourseController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> createCourse(@ModelAttribute Course course) {
+    public ResponseEntity<String> createCourse(@RequestBody Course course) {
         boolean success = courseService.saveCourse(course);
 
         if(success) {
