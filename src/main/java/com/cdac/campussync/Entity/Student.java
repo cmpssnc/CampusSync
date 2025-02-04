@@ -15,4 +15,13 @@ public class Student extends User {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course enrolledCourse;
+
+    // custom constructor
+    public Student (User user) {
+        this.setName(user.getName());
+        this.setUsername(user.getUsername());
+        this.setEmail(user.getEmail());
+        this.setPassword(user.getPassword());
+        this.setRole(user.getRole());
+    }
 }

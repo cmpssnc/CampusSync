@@ -8,17 +8,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class TeacherService {
 
-    private TeacherRepository teacherRepository;
+    private final TeacherRepository teacherRepository;
 
     @Autowired
     public TeacherService(TeacherRepository teacherRepository) {
         this.teacherRepository = teacherRepository;
     }
 
-//    // Create or update a teacher
-//    public Teacher saveTeacher(Teacher teacher) {
-//        return teacherRepository.save(teacher);
-//    }
+    // Create or update a teacher
+    public boolean saveTeacher(Teacher teacher) {
+        try {
+            teacherRepository.save(teacher);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
 //
 //    // Get teacher by ID
 //    public Teacher getTeacherById(Long teacherId) {

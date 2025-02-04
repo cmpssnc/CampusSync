@@ -21,6 +21,15 @@ public class StudentService {
         this.courseRepository = courseRepository;
     }
 
+    public boolean saveStudent(Student student) {
+        try {
+            studentRepository.save(student);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
 //    // Enroll a student in a course
 //    public Student enrollInCourse(Long studentId, Long courseId) {
 //        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
