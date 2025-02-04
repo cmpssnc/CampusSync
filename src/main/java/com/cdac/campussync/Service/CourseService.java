@@ -5,25 +5,40 @@ import com.cdac.campussync.Repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CourseService {
 
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
+    // constructor autowiring
     @Autowired
     public CourseService(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
     }
 
-//    // Create or update a course
-//    public Course saveCourse(Course course) {
-//        return courseRepository.save(course);
-//    }
-//
-//    // Find a course by its ID
-//    public Course getCourseById(Long courseId) {
-//        return courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
-//    }
+    // retrieve and return all courses from the database
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
+    }
 
-    // Other course-related business logic can be added here
+    // Find a course by its ID
+    public Course getCourseById(Long courseId) {
+        try {
+            return courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    // Create or update a course
+    public boolean saveCourse(Course course) {
+        try {
+            courseRepository.save(course);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
 }

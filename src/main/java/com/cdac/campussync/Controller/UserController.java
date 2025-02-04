@@ -58,7 +58,7 @@ public class UserController {
         if (success) {
             return ResponseEntity.status(201).body("User Registration Successful!");
         } else {
-            return ResponseEntity.status(500).body("User Registration Failed!");
+            return ResponseEntity.status(400).body("User Registration Failed! Invalid Input Data.");
         }
     }
 }
