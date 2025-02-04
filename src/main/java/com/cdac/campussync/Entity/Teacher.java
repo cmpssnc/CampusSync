@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 public class Teacher extends User {
 
+    // One teacher can teach multiple subjects
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     private List<Subject> subjectsTaught;
 }

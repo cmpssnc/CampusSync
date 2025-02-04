@@ -18,6 +18,7 @@ public class Assignment {
 
     private String title;
 
+    @Column(nullable = false)
     private LocalDate deadline;
 
     private String fileName;
@@ -26,6 +27,7 @@ public class Assignment {
     @Lob // Stores large binary data
     private byte[] fileData;
 
+    // Many assignments can be mapped to the same Subject
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;

@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 public class Student extends User {
 
+    // Many students can be mapped to the same course
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course enrolledCourse;
