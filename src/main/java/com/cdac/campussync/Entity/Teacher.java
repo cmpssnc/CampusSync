@@ -12,5 +12,5 @@ import java.util.List;
 public class Teacher extends User {
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
-    private List<Course> coursesTaught;
+    private List<Subject> subjectsTaught;
 }

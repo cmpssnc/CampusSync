@@ -11,11 +11,7 @@ import java.util.List;
 @Entity
 public class Student extends User {
 
-    @ManyToMany
-    @JoinTable(
-            name = "student_courses",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
-    private List<Course> enrolledCourses;
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course enrolledCourse;
 }

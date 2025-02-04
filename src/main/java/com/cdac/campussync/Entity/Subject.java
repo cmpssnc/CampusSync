@@ -9,17 +9,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Course {
+public class Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String courseName;
+    private String subjectName;
 
-    @OneToMany(mappedBy = "enrolledCourse")
-    private List<Student> students;
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
 
-    @OneToMany(mappedBy = "course")
-    private List<Subject> subjects;
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 }
