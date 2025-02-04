@@ -18,6 +18,8 @@ public class Course {
     @Column(unique = true, nullable = false)
     private String courseName;
 
+    private String courseDescription;
+
     // One course will have many students enrolled in it
     @OneToMany(mappedBy = "enrolledCourse", cascade = CascadeType.ALL)
     private List<Student> students;
