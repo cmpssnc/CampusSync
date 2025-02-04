@@ -2,7 +2,6 @@ package com.cdac.campussync.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +15,7 @@ public class Student extends User {
     @JoinColumn(name = "course_id")
     private Course enrolledCourse;
 
-    // custom constructor
+    // custom copy constructor
     public Student (User user) {
         this.setName(user.getName());
         this.setUsername(user.getUsername());

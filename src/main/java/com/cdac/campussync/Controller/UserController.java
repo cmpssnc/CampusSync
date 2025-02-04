@@ -36,7 +36,7 @@ public class UserController {
         // encrypts the password in the user object
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if(user.getRole() == Role.STUDENT) {
+        if(user.getRole() == Role.TEACHER) {
 
             // makes a teacher object by copying all values of the existing user object into a new teacher object
             // constructor defined in Teacher entity
@@ -45,7 +45,7 @@ public class UserController {
             // returns true if the teacher is saved successfully, otherwise returns false
             success = teacherService.saveTeacher(teacher);
         }
-        else if (user.getRole() == Role.TEACHER) {
+        else if (user.getRole() == Role.STUDENT) {
 
             // makes a student object by copying all values of the existing user object into a new student object
             // constructor defined in Student entity
