@@ -24,4 +24,7 @@ public class Subject {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+
+    @OneToMany(mappedBy="subject")
+    private List<Assignment> assignments;
 }

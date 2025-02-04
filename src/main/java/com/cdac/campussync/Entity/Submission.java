@@ -31,7 +31,7 @@ public class Submission {
     @JoinColumn(name = "student_id")
     private Student student;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "assignment_id")
     private Assignment assignment;
 }

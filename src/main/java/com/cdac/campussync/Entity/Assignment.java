@@ -3,6 +3,8 @@ package com.cdac.campussync.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +18,8 @@ public class Assignment {
 
     private String title;
 
+    private LocalDate deadline;
+
     private String fileName;
     private String fileType;
 
@@ -23,6 +27,6 @@ public class Assignment {
     private byte[] fileData;
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 }
