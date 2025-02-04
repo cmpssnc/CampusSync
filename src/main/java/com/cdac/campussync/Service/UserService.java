@@ -1,5 +1,6 @@
 package com.cdac.campussync.Service;
 
+import com.cdac.campussync.Entity.User;
 import com.cdac.campussync.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-//    // Create or update a user
-//    public User saveUser(User user) {
-//        return userRepository.save(user);
-//    }
+    // Create or update a user
+    public boolean saveUser(User user) {
+        try {
+            userRepository.save(user);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
 //
 //    // Find user by username
 //    public User findByUsername(String username) {

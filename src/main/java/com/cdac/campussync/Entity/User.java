@@ -6,6 +6,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -16,6 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @Column(unique = true, nullable = false)
@@ -27,6 +29,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role; // ADMIN, TEACHER, STUDENT
 }
