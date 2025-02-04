@@ -22,8 +22,9 @@ public class CourseController {
     }
 
     // return all courses in the database when there is a request on the endpoint: /api/courses
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Course>> getAllCourses() {
+        System.out.println("url Hit");
         List<Course> courses = courseService.getAllCourses();
         return ResponseEntity.status(200).body(courses);
     }
@@ -39,7 +40,7 @@ public class CourseController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<String> createCourse(@RequestBody Course course) {
         boolean success = courseService.saveCourse(course);
 
