@@ -20,13 +20,10 @@ public class SubmissionService {
         this.assignmentRepository = assignmentRepository;
     }
 
-//    // Create or update a submission
-//    public Submission saveSubmission(Submission submission, Long assignmentId, Long studentId) {
-//        Assignment assignment = assignmentRepository.findById(assignmentId).orElseThrow(() -> new RuntimeException("Assignment not found"));
-//        submission.setAssignment(assignment);
-//        submission.setStudent(studentId);  // Assuming Student entity is linked with studentId
-//        return submissionRepository.save(submission);
-//    }
+    // Create or update a submission
+    public Submission saveSubmission() {
+
+    }
 //
 //    // Get submission by ID
 //    public Submission getSubmissionById(Long submissionId) {
