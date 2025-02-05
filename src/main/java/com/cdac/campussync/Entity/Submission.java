@@ -2,6 +2,8 @@ package com.cdac.campussync.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDate;
 
 @Getter
@@ -15,6 +17,7 @@ public class Submission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDate submissionDate;
 
