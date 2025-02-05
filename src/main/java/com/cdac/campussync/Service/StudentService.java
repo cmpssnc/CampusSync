@@ -8,6 +8,9 @@ import com.cdac.campussync.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class StudentService {
 
@@ -30,19 +33,31 @@ public class StudentService {
         }
     }
 
-//    // Enroll a student in a course
-//    public Student enrollInCourse(Long studentId, Long courseId) {
-//        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
-//        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
-//
-//        student.setCourse(course);
-//        return studentRepository.save(student);
-//    }
-//
-//    // Get student by associated user
-//    public Student getStudentByUser(User user) {
-//        return studentRepository.findByUser(user);
-//    }
+    // Fetch all students
+    public List<Student> findAllStudents() {
+        return studentRepository.findAll();
+    }
 
-    // Other student-related business logic can be added here
+    // Find all students who don't have a course assigned (course_id is null)
+    public List<Student> findStudentsWithNoCourse() {
+        return studentRepository.findByEnrolledCourseIsNull();
+    }
+
+    // Assign a course to a student
+    public Student assignCourseToStudent(Long studentId, Long courseId) {
+        Optional<Student> studentOpt = studentRepository.findById(studentId);
+        Optional<Course> courseOpt = courseRepository.findById(courseId);
+
+        if (studentOpt.isPresent() && courseOpt.isPresent()) {
+            Student student = studentOpt.get();
+            Course course = courseOpt.get();
+
+            student.setEnrolledCourse(course);
+            return studentRepository.save(student);
+        } else {
+            throw new RuntimeException("Student or Course not found");
+        }
+    }
 }
+
+
