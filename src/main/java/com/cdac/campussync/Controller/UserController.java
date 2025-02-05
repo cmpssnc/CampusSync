@@ -52,7 +52,6 @@ public class UserController {
 
 
         if(user.getRole() == Role.TEACHER) {
-
             // makes a teacher object by copying all values of the existing user object into a new teacher object
             // constructor defined in Teacher entity
             Teacher teacher = new Teacher(user);
