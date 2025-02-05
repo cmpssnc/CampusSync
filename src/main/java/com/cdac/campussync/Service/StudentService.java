@@ -59,42 +59,33 @@ public class StudentService {
         }
     }
 
-    // Update student details (including changing course)
-    public Student updateStudent(Long studentId, Student studentDetails) {
+    // Update student details (can only change email and contact details)
+     public Student updateStudent(Long studentId, Student studentDetails) {
         Optional<Student> studentOpt = studentRepository.findById(studentId);
 
         if (studentOpt.isPresent()) {
             Student student = studentOpt.get();
 
-            // Update basic student details
-            student.setName(studentDetails.getName());
-            student.setUsername(studentDetails.getUsername());
+            // Update only email and contact number
             student.setEmail(studentDetails.getEmail());
-            student.setPassword(studentDetails.getPassword());
-            student.setRole(studentDetails.getRole());
-
-            // Update the enrolled course if provided
-            if (studentDetails.getEnrolledCourse() != null) {
-                Course course = studentDetails.getEnrolledCourse();
-                student.setEnrolledCourse(course);
-            }
+            student.setContactNumber(studentDetails.getContactNumber());
 
             return studentRepository.save(student);
         } else {
-            throw new RuntimeException("Student not found");
+            throw new RuntimeException("Student not found with ID: " + studentId);
         }
     }
+
 
     // Delete a student by id
-    public void deleteStudent(Long studentId) {
-        Optional<Student> studentOpt = studentRepository.findById(studentId);
-
-        if (studentOpt.isPresent()) {
+    public boolean deleteStudent(Long studentId) {
+        if (studentRepository.existsById(studentId)) {
             studentRepository.deleteById(studentId);
-        } else {
-            throw new RuntimeException("Student not found");
+            return true; // Successfully deleted
         }
+        return false; // Student not found
     }
+
 }
 
 
