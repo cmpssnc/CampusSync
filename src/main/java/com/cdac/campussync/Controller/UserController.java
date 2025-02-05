@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -36,8 +38,18 @@ public class UserController {
 
         boolean success = false;
 
-        // encrypts the password in the user object
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Long maxId = userService.findMaxId();
+        if(maxId == null) {
+            maxId = 1L;
+        } else {
+            maxId++;
+        }
+        // sets the username to name + id
+        user.setUsername(user.getName() + maxId);
+
+        // password same as username
+        user.setPassword(passwordEncoder.encode(user.getUsername()));
+
 
         if(user.getRole() == Role.TEACHER) {
 
