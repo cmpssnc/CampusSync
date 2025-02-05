@@ -58,6 +58,43 @@ public class StudentService {
             throw new RuntimeException("Student or Course not found");
         }
     }
+
+    // Update student details (including changing course)
+    public Student updateStudent(Long studentId, Student studentDetails) {
+        Optional<Student> studentOpt = studentRepository.findById(studentId);
+
+        if (studentOpt.isPresent()) {
+            Student student = studentOpt.get();
+
+            // Update basic student details
+            student.setName(studentDetails.getName());
+            student.setUsername(studentDetails.getUsername());
+            student.setEmail(studentDetails.getEmail());
+            student.setPassword(studentDetails.getPassword());
+            student.setRole(studentDetails.getRole());
+
+            // Update the enrolled course if provided
+            if (studentDetails.getEnrolledCourse() != null) {
+                Course course = studentDetails.getEnrolledCourse();
+                student.setEnrolledCourse(course);
+            }
+
+            return studentRepository.save(student);
+        } else {
+            throw new RuntimeException("Student not found");
+        }
+    }
+
+    // Delete a student by id
+    public void deleteStudent(Long studentId) {
+        Optional<Student> studentOpt = studentRepository.findById(studentId);
+
+        if (studentOpt.isPresent()) {
+            studentRepository.deleteById(studentId);
+        } else {
+            throw new RuntimeException("Student not found");
+        }
+    }
 }
 
 

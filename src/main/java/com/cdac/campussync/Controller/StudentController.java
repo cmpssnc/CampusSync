@@ -32,4 +32,16 @@ public class StudentController {
     public Student assignCourseToStudent(@PathVariable Long studentId, @PathVariable Long courseId) {
         return studentService.assignCourseToStudent(studentId, courseId);
     }
+
+    // Update student details (including course)
+    @PutMapping("/{studentId}")
+    public Student updateStudent(@PathVariable Long studentId, @RequestBody Student studentDetails) {
+        return studentService.updateStudent(studentId, studentDetails);
+    }
+
+    // Delete a student by id
+    @DeleteMapping("/{studentId}")
+    public void deleteStudent(@PathVariable Long studentId) {
+        studentService.deleteStudent(studentId);
+    }
 }

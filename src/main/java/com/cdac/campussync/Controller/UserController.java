@@ -33,8 +33,11 @@ public class UserController {
 
         boolean success = false;
 
-        // encrypts the password in the user object
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // sets the username to name + id
+        user.setUsername(user.getName() + userService.findMaxId());
+
+        // password same as username
+        user.setPassword(passwordEncoder.encode(user.getUsername()));
 
         if(user.getRole() == Role.TEACHER) {
 
