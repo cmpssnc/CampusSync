@@ -6,6 +6,7 @@ import com.cdac.campussync.Repository.AssignmentRepository;
 import com.cdac.campussync.Repository.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class SubmissionService {
@@ -21,8 +22,13 @@ public class SubmissionService {
     }
 
     // Create or update a submission
-    public Submission saveSubmission() {
-
+    public boolean saveSubmission(@RequestBody Submission submission) {
+        try {
+            submissionRepository.save(submission);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 //
 //    // Get submission by ID

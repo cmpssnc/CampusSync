@@ -20,8 +20,12 @@ public class SubmissionController {
         this.submissionService = submissionService;
     }
 
-//    @PostMapping
-//    public ResponseEntity<String> submit(@RequestBody Submission submission) {
-//
-//    }
+    @PostMapping
+    public ResponseEntity<String> submit(@RequestBody Submission submission) {
+        if(submissionService.saveSubmission(submission)) {
+            return ResponseEntity.status(201).body("Submission Saved!");
+        } else {
+            return ResponseEntity.status(400).body("Submission Not Saved! Illegal request data.");
+        }
+    }
 }

@@ -24,6 +24,10 @@ public class UserService {
             return false;
         }
     }
+
+    public Long findMaxId() {
+        return userRepository.findMaxId();
+    }
 //
 //    // Find user by username
 //    public User findByUsername(String username) {
