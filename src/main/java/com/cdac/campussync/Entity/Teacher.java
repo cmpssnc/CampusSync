@@ -22,5 +22,6 @@ public class Teacher extends User {
         this.setEmail(user.getEmail());
         this.setPassword(user.getPassword());
         this.setRole(user.getRole());
+        this.setContactNumber(user.getContactNumber());
     }
 }

@@ -15,9 +15,6 @@ public class Student extends User {
     @JoinColumn(name = "course_id")
     private Course enrolledCourse;
 
-    @Column(nullable = false)
-    private String contactNumber;
-
     // custom copy constructor
     public Student (User user) {
         this.setName(user.getName());
@@ -25,5 +22,6 @@ public class Student extends User {
         this.setEmail(user.getEmail());
         this.setPassword(user.getPassword());
         this.setRole(user.getRole());
+        this.setContactNumber(user.getContactNumber());
     }
 }
