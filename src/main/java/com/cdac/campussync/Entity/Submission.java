@@ -1,5 +1,6 @@
 package com.cdac.campussync.Entity;
 
+import com.cdac.campussync.Enum.SubmissionStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -25,7 +26,8 @@ public class Submission {
     private byte[] fileData; // Stores the submitted file
 
     @Column(nullable = false)
-    private String status; // Submitted, Pending, Graded
+    @Enumerated(EnumType.STRING)
+    private SubmissionStatus status; // Submitted, Graded
 
     private Double grade;
 
