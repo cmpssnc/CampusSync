@@ -36,6 +36,9 @@ public class UserController {
 
         boolean success = false;
 
+        // encrypts the password in the user object
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         if(user.getRole() == Role.TEACHER) {
 
             // makes a teacher object by copying all values of the existing user object into a new teacher object
