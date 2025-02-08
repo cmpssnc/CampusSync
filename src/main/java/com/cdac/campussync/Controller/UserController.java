@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/admin/users")
 public class UserController {
 
     private final StudentService studentService;
@@ -50,8 +50,8 @@ public class UserController {
         // password same as username
         user.setPassword(passwordEncoder.encode(user.getUsername()));
 
+        if(user.getRole() == Role.ROLE_TEACHER) {
 
-        if(user.getRole() == Role.TEACHER) {
             // makes a teacher object by copying all values of the existing user object into a new teacher object
             // constructor defined in Teacher entity
             Teacher teacher = new Teacher(user);
@@ -59,7 +59,7 @@ public class UserController {
             // returns true if the teacher is saved successfully, otherwise returns false
             success = teacherService.saveTeacher(teacher);
         }
-        else if (user.getRole() == Role.STUDENT) {
+        else if (user.getRole() == Role.ROLE_STUDENT) {
 
             // makes a student object by copying all values of the existing user object into a new student object
             // constructor defined in Student entity
