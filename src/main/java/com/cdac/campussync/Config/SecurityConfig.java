@@ -14,11 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -34,7 +29,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/auth/login", "/auth/logout", "/api/users/register").permitAll());
+        http.authorizeHttpRequests(authorize -> {authorize.requestMatchers("/admin/**", "/api/**").hasRole("ADMIN");});
+        http.authorizeHttpRequests(authorize -> {authorize.requestMatchers("/teacher/**", "/api/**").hasRole("TEACHER");});
+        http.authorizeHttpRequests(authorize -> {authorize.requestMatchers("/student/**", "/api/**").hasRole("STUDENT");});
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/auth/login", "/auth/logout").permitAll());
         http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
