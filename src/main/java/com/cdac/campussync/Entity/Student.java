@@ -1,7 +1,10 @@
 package com.cdac.campussync.Entity;
 
+import com.cdac.campussync.Enum.Gender;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -12,8 +15,20 @@ public class Student extends User {
 
     // Many students can be mapped to the same course
     @ManyToOne
-    @JoinColumn(name = "course_id")
+    @JoinColumn(name = "course_id", nullable = false)
     private Course enrolledCourse;
+
+    @Lob
+    private byte[] photo;
+
+    @Column(nullable = false)
+    private LocalDate dateOfBirth;
+
+    @Column(nullable = false)
+    private Gender gender;
+
+    @Column(nullable = false)
+    private String address;
 
     // custom copy constructor
     public Student (User user) {
