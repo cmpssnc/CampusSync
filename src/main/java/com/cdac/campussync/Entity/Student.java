@@ -25,16 +25,8 @@ public class Student extends User {
     @Column(nullable = false)
     private String address;
 
-    // custom copy constructor
-    public Student (User user) {
-        this.setName(user.getName());
-        this.setUsername(user.getUsername());
-        this.setEmail(user.getEmail());
-        this.setPassword(user.getPassword());
-        this.setRole(user.getRole());
-        this.setContactNumber(user.getContactNumber());
-    }
 
+    // getter, setter, constructor
     public Student() {
     }
 

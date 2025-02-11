@@ -10,16 +10,6 @@ public class Teacher extends User {
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     private List<Subject> subjectsTaught;
 
-    // custom copy constructor
-    public Teacher (User user) {
-        this.setName(user.getName());
-        this.setUsername(user.getUsername());
-        this.setEmail(user.getEmail());
-        this.setPassword(user.getPassword());
-        this.setRole(user.getRole());
-        this.setContactNumber(user.getContactNumber());
-    }
-
     // getter, setter, constructor
     public Teacher() {
     }
