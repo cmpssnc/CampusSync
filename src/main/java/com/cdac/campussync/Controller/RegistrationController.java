@@ -1,5 +1,6 @@
 package com.cdac.campussync.Controller;
 
+import com.cdac.campussync.Entity.Course;
 import com.cdac.campussync.Entity.Student;
 import com.cdac.campussync.Entity.Teacher;
 import com.cdac.campussync.Entity.User;
@@ -15,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/register")
 public class RegistrationController {
 
     private final StudentService studentService;
@@ -36,7 +37,7 @@ public class RegistrationController {
 
     // Register a user in their respective table depending on their role
     @Transactional(rollbackOn = Exception.class)
-    @PostMapping("/register/teacher")
+    @PostMapping("/teacher")
     public ResponseEntity<String> registerTeacher(@RequestBody Teacher teacher) {
 
         boolean success;
@@ -66,7 +67,7 @@ public class RegistrationController {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    @PostMapping("/register/student")
+    @PostMapping("/student")
     public ResponseEntity<String> registerStudent(@RequestBody Student student) {
 
         boolean success;

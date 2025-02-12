@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/courses")
+@RequestMapping("/admin/courses")
 public class CourseController {
 
     private final CourseService courseService;
@@ -24,9 +25,18 @@ public class CourseController {
     // return all courses in the database when there is a request on the endpoint: /api/courses
     @GetMapping
     public ResponseEntity<List<Course>> getAllCourses() {
-        System.out.println("url Hit");
         List<Course> courses = courseService.getAllCourses();
         return ResponseEntity.status(200).body(courses);
+    }
+
+    @GetMapping("/names")
+    public ResponseEntity<List<String>> getCourseNames() {
+        List<Course> courses = courseService.getAllCourses();
+        List<String> courseNames = new ArrayList<>();
+        for (Course course : courses) {
+            courseNames.add(course.getCourseName());
+        }
+        return ResponseEntity.status(200).body(courseNames);
     }
 
     // return the course with the provided id when there is a request on the endpoint: /api/courses/:course_id

@@ -1,20 +1,30 @@
 package com.cdac.campussync.Controller;
 
+import com.cdac.campussync.DTO.StudentFilterObject;
+import com.cdac.campussync.Entity.Course;
 import com.cdac.campussync.Entity.Student;
+import com.cdac.campussync.Service.CourseService;
 import com.cdac.campussync.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/students")
+@RequestMapping("/admin/students")
 public class StudentController {
 
+    private final StudentService studentService;
+    private final CourseService courseService;
+
     @Autowired
-    private StudentService studentService;
+    StudentController(StudentService studentService, CourseService courseService) {
+        this.studentService = studentService;
+        this.courseService = courseService;
+    }
 
     // Fetch all students
     @GetMapping("/")
@@ -69,4 +79,26 @@ public class StudentController {
         }
     }
 
+
+    // filtering students based on name or course or both
+    @GetMapping("/filter")
+    public ResponseEntity<List<StudentFilterObject>> filterStudents(@RequestParam("name") String nameFilter, @RequestParam("course") String courseFilter) {
+        List<Student> finalList = null;
+        Course course = courseService.getCourseByName(courseFilter);
+        if(nameFilter.isEmpty() && !courseFilter.isEmpty()) {
+            finalList = studentService.findStudentsByEnrolledCourse(course);
+        }
+        else if(!nameFilter.isEmpty() && courseFilter.isEmpty()) {
+            finalList = studentService.findStudentsWithNameContaining(nameFilter);
+        }
+        else if(!nameFilter.isEmpty()) {
+            finalList = studentService.findStudentsByEnrolledCourseAndNameContaining(course ,nameFilter);
+        }
+
+        List<StudentFilterObject> listToSend = new ArrayList<>();
+
+        assert finalList != null;
+        finalList.forEach(student -> listToSend.add(new StudentFilterObject(student)));
+        return ResponseEntity.status(200).body(listToSend);
+    }
 }

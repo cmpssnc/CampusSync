@@ -41,4 +41,13 @@ public class CourseService {
             return false;
         }
     }
+
+    // find a course by its name
+    public Course getCourseByName(String courseName) {
+        try{
+            return courseRepository.findByCourseName(courseName);
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
 }

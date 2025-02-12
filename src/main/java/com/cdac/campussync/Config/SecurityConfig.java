@@ -30,10 +30,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
 //        http.authorizeHttpRequests(authorize -> {authorize.requestMatchers("/admin/**", "/api/**").hasRole("ADMIN");});
-        http.authorizeHttpRequests(authorize -> {authorize.requestMatchers("/teacher/**", "/api/**").hasRole("TEACHER");});
-        http.authorizeHttpRequests(authorize -> {authorize.requestMatchers("/student/**", "/api/**").hasRole("STUDENT");});
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/auth/login", "/auth/logout", "/admin/register/teacher").permitAll());
-        http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
+//        http.authorizeHttpRequests(authorize -> {authorize.requestMatchers("/teacher/**", "/api/**").hasRole("TEACHER");});
+//        http.authorizeHttpRequests(authorize -> {authorize.requestMatchers("/student/**", "/api/**").hasRole("STUDENT");});
+//        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/auth/login", "/auth/logout").permitAll());
+//        http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
+
+        // temporarily permit requests to all rest endpoints for testing
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/**").permitAll());
+
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(AbstractHttpConfigurer::disable);

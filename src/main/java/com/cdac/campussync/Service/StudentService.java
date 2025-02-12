@@ -2,7 +2,6 @@ package com.cdac.campussync.Service;
 
 import com.cdac.campussync.Entity.Course;
 import com.cdac.campussync.Entity.Student;
-import com.cdac.campussync.Entity.User;
 import com.cdac.campussync.Repository.CourseRepository;
 import com.cdac.campussync.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +75,6 @@ public class StudentService {
         }
     }
 
-
     // Delete a student by id
     public boolean deleteStudent(Long studentId) {
         if (studentRepository.existsById(studentId)) {
@@ -86,6 +84,20 @@ public class StudentService {
         return false; // Student not found
     }
 
+    // find students with a name search query
+    public List<Student> findStudentsWithNameContaining(String name) {
+        return studentRepository.findByNameContaining(name);
+    }
+
+    // finds all students who are enrolled in a particular course
+    public List<Student> findStudentsByEnrolledCourse(Course course) {
+        return studentRepository.findByEnrolledCourse(course);
+    }
+
+    // finds all students who are enrolled in the course and who's names contain the provided name string
+    public List<Student> findStudentsByEnrolledCourseAndNameContaining(Course course, String name) {
+        return studentRepository.findByEnrolledCourseAndNameContaining(course, name);
+    }
 }
 
 
