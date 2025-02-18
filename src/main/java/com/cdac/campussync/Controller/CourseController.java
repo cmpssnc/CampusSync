@@ -30,7 +30,7 @@ public class CourseController {
         List<CourseObject> courseObjects = new ArrayList<>();
 
         for(Course course : courses) {
-            CourseObject obj = new CourseObject(course.getId(), course.getCourseName());
+            CourseObject obj = new CourseObject(course.getId(), course.getCourseName(), course.getCourseDescription());
             courseObjects.add(obj);
         }
         return ResponseEntity.status(200).body(courseObjects);
