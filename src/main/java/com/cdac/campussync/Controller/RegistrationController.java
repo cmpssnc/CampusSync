@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/admin/register")
@@ -48,7 +51,6 @@ public class RegistrationController {
         } else {
             maxId++;
         }
-        String strPassword = teacher.getPassword();
 
         // sets the username to name + id
         teacher.setUsername(teacher.getName() + maxId);
@@ -59,41 +61,88 @@ public class RegistrationController {
         success = teacherService.saveTeacher(teacher);
 
         if (success) {
-            emailService.sendCredentials(teacher.getEmail(), teacher.getUsername(), strPassword);
+            emailService.sendCredentials(teacher.getEmail(), teacher.getUsername(), teacher.getUsername());
             return ResponseEntity.status(201).body("User Registration Successful!");
         } else {
             return ResponseEntity.status(400).body("Teacher Registration Failed!");
         }
     }
 
-    @Transactional(rollbackOn = Exception.class)
-    @PostMapping("/student")
-    public ResponseEntity<String> registerStudent(@RequestBody Student student) {
-
-        boolean success;
-
-        Long maxId = userService.findMaxId();
-        if(maxId == null) {
-            maxId = 1L;
-        } else {
-            maxId++;
+//    @Transactional(rollbackOn = Exception.class)
+//    @PostMapping("/student")
+//    public ResponseEntity<String> registerStudent(@RequestBody Student student, @RequestParam("photo") MultipartFile file) {
+//
+//        // ensuring filesize less than 1MB, otherwise error
+//        if (file.getSize() > 1024 * 1024) {
+//            return ResponseEntity.badRequest().body("File size exceeds 1MB limit");
+//        }
+//
+//        // saving photo
+//        try {
+//            student.setPhoto(file.getBytes());
+//        } catch (IOException e) {
+//            System.err.println(e.getMessage());
+//        }
+//
+//        boolean success;
+//
+//        Long maxId = userService.findMaxId();
+//        if(maxId == null) {
+//            maxId = 1L;
+//        } else {
+//            maxId++;
+//        }
+//
+//        // sets the username to name + id
+//        student.setUsername(student.getName().replaceAll("\\s", "").toLowerCase() + maxId);
+//
+//        // password same as username
+//        student.setPassword(passwordEncoder.encode(student.getUsername()));
+//
+//        success = studentService.saveStudent(student);
+//
+//        if (success) {
+//            emailService.sendCredentials(student.getEmail(), student.getUsername(), student.getUsername());
+//            return ResponseEntity.status(201).body("Student Registration Successful!");
+//        } else {
+//            return ResponseEntity.status(400).body("Teacher Registration Failed! Invalid Input Data.");
+//        }
+//    }
+@Transactional(rollbackOn = Exception.class)
+@PostMapping("/student")
+public ResponseEntity<String> registerStudent(
+        @RequestPart("student") Student student,  // Receives JSON data as a separate part
+        @RequestPart(value = "photo", required = false) MultipartFile file // Receives file separately
+) {
+        System.out.println(student.toString());
+    try {
+        // File size validation (if photo is uploaded)
+        if (file != null && file.getSize() > 1024 * 1024) {
+            return ResponseEntity.badRequest().body("File size exceeds 1MB limit");
         }
 
-        String strPassword = student.getPassword();
-        // sets the username to name + id
-        student.setUsername(student.getName() + maxId);
+        // Store the file as a byte array
+        if (file != null) {
+            student.setPhoto(file.getBytes());
+        }
 
-        // password same as username
+        // Generate unique username and password
+        Long maxId = userService.findMaxId();
+        maxId = (maxId == null) ? 1L : maxId + 1;
+        student.setUsername(student.getName().replaceAll("\\s", "").toLowerCase() + maxId);
         student.setPassword(passwordEncoder.encode(student.getUsername()));
 
-        success = studentService.saveStudent(student);
+        // Save the student
+        boolean success = studentService.saveStudent(student);
 
         if (success) {
-            emailService.sendCredentials(student.getEmail(), student.getUsername(), strPassword);
+            emailService.sendCredentials(student.getEmail(), student.getUsername(), student.getUsername());
             return ResponseEntity.status(201).body("Student Registration Successful!");
         } else {
-            return ResponseEntity.status(400).body("Teacher Registration Failed! Invalid Input Data.");
+            return ResponseEntity.status(400).body("Student Registration Failed! Invalid Input Data.");
         }
+    } catch (IOException e) {
+        return ResponseEntity.status(500).body("Error processing file upload.");
     }
-
+}
 }

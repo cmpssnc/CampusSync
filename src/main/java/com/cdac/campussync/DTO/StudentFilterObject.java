@@ -7,10 +7,21 @@ public class StudentFilterObject {
     private String name;
     private String courseName;
 
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    private String contactNumber;
+
     public StudentFilterObject(Student student) {
         this.id = student.getId();
         this.name = student.getName();
         this.courseName = student.getEnrolledCourse().getCourseName();
+        this.contactNumber = student.getContactNumber();
     }
 
     public Long getId() {

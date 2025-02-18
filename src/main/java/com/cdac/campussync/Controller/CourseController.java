@@ -1,6 +1,7 @@
 package com.cdac.campussync.Controller;
 
 
+import com.cdac.campussync.DTO.CourseObject;
 import com.cdac.campussync.Entity.Course;
 import com.cdac.campussync.Service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +25,15 @@ public class CourseController {
 
     // return all courses in the database when there is a request on the endpoint: /api/courses
     @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<List<CourseObject>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
-        return ResponseEntity.status(200).body(courses);
-    }
+        List<CourseObject> courseObjects = new ArrayList<>();
 
-    @GetMapping("/names")
-    public ResponseEntity<List<String>> getCourseNames() {
-        List<Course> courses = courseService.getAllCourses();
-        List<String> courseNames = new ArrayList<>();
-        for (Course course : courses) {
-            courseNames.add(course.getCourseName());
+        for(Course course : courses) {
+            CourseObject obj = new CourseObject(course.getId(), course.getCourseName());
+            courseObjects.add(obj);
         }
-        return ResponseEntity.status(200).body(courseNames);
+        return ResponseEntity.status(200).body(courseObjects);
     }
 
     // return the course with the provided id when there is a request on the endpoint: /api/courses/:course_id

@@ -1,9 +1,11 @@
 package com.cdac.campussync.Entity;
 
 import com.cdac.campussync.Enum.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @Entity
 public class Student extends User {
@@ -14,6 +16,7 @@ public class Student extends User {
     private Course enrolledCourse;
 
     @Lob
+    @JsonIgnore
     private byte[] photo;
 
     @Column(nullable = false)
@@ -77,5 +80,16 @@ public class Student extends User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "enrolledCourse=" + enrolledCourse +
+                ", photo=" + Arrays.toString(photo) +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender=" + gender +
+                ", address='" + address + '\'' +
+                '}';
     }
 }

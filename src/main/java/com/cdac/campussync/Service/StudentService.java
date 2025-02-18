@@ -2,12 +2,15 @@ package com.cdac.campussync.Service;
 
 import com.cdac.campussync.Entity.Course;
 import com.cdac.campussync.Entity.Student;
+import com.cdac.campussync.Enum.Gender;
 import com.cdac.campussync.Repository.CourseRepository;
 import com.cdac.campussync.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -42,38 +45,49 @@ public class StudentService {
         return studentRepository.findByEnrolledCourseIsNull();
     }
 
-    // Assign a course to a student
-    public Student assignCourseToStudent(Long studentId, Long courseId) {
-        Optional<Student> studentOpt = studentRepository.findById(studentId);
-        Optional<Course> courseOpt = courseRepository.findById(courseId);
-
-        if (studentOpt.isPresent() && courseOpt.isPresent()) {
-            Student student = studentOpt.get();
-            Course course = courseOpt.get();
-
-            student.setEnrolledCourse(course);
-            return studentRepository.save(student);
-        } else {
-            throw new RuntimeException("Student or Course not found");
-        }
+    // find student by id
+    public Student findStudentById(long id) {
+        return studentRepository.findById(id).orElse(null);
     }
 
-    // Update student details (can only change email and contact details)
-     public Student updateStudent(Long studentId, Student studentDetails) {
-        Optional<Student> studentOpt = studentRepository.findById(studentId);
+    public Optional<Student> updateStudent(Long studentId, Map<String, Object> updates) {
+        Optional<Student> optionalStudent = studentRepository.findById(studentId);
 
-        if (studentOpt.isPresent()) {
-            Student student = studentOpt.get();
+        if (optionalStudent.isPresent()) {
+            Student student = optionalStudent.get();
 
-            // Update only email and contact number
-            student.setEmail(studentDetails.getEmail());
-            student.setContactNumber(studentDetails.getContactNumber());
+            updates.forEach((key, value) -> {
+                switch (key) {
+                    case "name":
+                        student.setName((String) value);
+                        break;
+                    case "dob":
+                        student.setDateOfBirth(LocalDate.parse((String) value)); // Ensure proper date parsing
+                        break;
+                    case "contactNumber":
+                        student.setContactNumber((String) value);
+                        break;
+                    case "gender":
+                        student.setGender(Gender.valueOf((String) value)); // Ensure valid enum conversion
+                        break;
+                    case "address":
+                        student.setAddress((String) value);
+                        break;
+                    case "enrolledCourseId":
+                        Course course = courseRepository.findById(Long.parseLong(value.toString())).orElse(null);
+                        student.setEnrolledCourse(course);
+                        break;
+                    default:
+                        break;
+                }
+            });
 
-            return studentRepository.save(student);
-        } else {
-            throw new RuntimeException("Student not found with ID: " + studentId);
+            studentRepository.save(student);
+            return Optional.of(student);
         }
+        return Optional.empty();
     }
+
 
     // Delete a student by id
     public boolean deleteStudent(Long studentId) {
